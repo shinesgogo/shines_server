@@ -16,22 +16,16 @@ app.add_middleware(
 )
 
 class TextData(BaseModel):
-    text: str
-
-# Middleware to log requests
-@app.middleware("http")
-async def log_requests(request: Request, call_next):
-    # Log the request method and URL
-    print(f"Received request: {request.method} {request.url}")
-    response = await call_next(request)
-    # Log the response status code
-    print(f"Response status: {response.status_code}")
-    return response
+    twitter_acount: str
+    content: str
 
 @app.post("/process_text")
 async def process_text(data: TextData):
-    # Optionally process the text here
-    return {"message": "You have successfully sent texts!"}
+    twitter_acount = data.twitter_acount
+    content = data.content
+    message = f"Account: {twitter_acount}\nContent: {content}\nSuccessful processing!\nWell done Samson!"
+    
+    return {"message": message}
 
 @app.post("/generate_image")
 async def generate_image(data: TextData):
